@@ -35,7 +35,7 @@ c.levelDataName = "levelData";
 c.newLevelDataName = "newLevelData";
 
 c.updateClientsDelay = 100;
-c.maxNumberOfConnectedClients = 4;
+c.maxNumberOfConnectedClients = 10;
 
 levelData.isNewData = true;
 levelData.data = "";

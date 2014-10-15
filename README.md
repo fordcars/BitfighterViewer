@@ -17,4 +17,4 @@ Note: You need Bitfighter and node.js to use this. You also need to download the
 
 - Then open a terminal (command line, cmd, what ever you want to call it :P) and cd to the BitfighterViewer directory. Now type node (or nodejs) server/server.js. Now if you connect to http://localhost:3000, you will see a live feed of the game! You can change the port in server.js.
 
-Troubleshooting: If node is not a recgnized command, try searching for "node.js command prompt". You will be able to use node-related stuff here. You can make node work in the normal command prompt by addind node to your path.
+Troubleshooting: If node is not a recognized command, try searching for "node.js command prompt". You will be able to use node-related stuff here. You can make node work in the normal command prompt by addind node to your path.

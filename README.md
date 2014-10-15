@@ -5,7 +5,7 @@ A server-web app that displays a live feed of a game using this game's Lua API.
 
 The game in question is Bitfighter: http://bitfighter.org
 
-Note: You need Bitfighter and node.js to use this. You also need to download the node modules using npm (npm command).
+Note: You need Bitfighter and node.js to use this. You also need to download the node modules using npm (npm command). You also need an HTML5 Web broswer for this to work!
 
 - To use, simply drop bitfighterViewer.levelgen (levelgen/bitfighterViewer.levelgen) in the scrips or levels directory of Bitfighter (in Application Support on Mac, app data on Windows, .bitfighter in Linux). You can change the bitfighterViewerUrl variable in the levelgen to the Ip or Url of the http server you'll be running if you want it to be displayed in the begginning of the level.
 

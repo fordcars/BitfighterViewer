@@ -1,0 +1,266 @@
+-- BitfighterViewer
+-- Copyright © 2014 Carl Hewett
+
+-- This program is free software: you can redistribute it and/or modify
+-- it under the terms of the GNU General Public License as published by
+-- the Free Software Foundation, either version 3 of the License, or
+-- (at your option) any later version.
+
+-- This program is distributed in the hope that it will be useful,
+-- but WITHOUT ANY WARRANTY; without even the implied warranty of
+-- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+-- GNU General Public License for more details.
+
+-- You should have received a copy of the GNU General Public License
+-- along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+-- $ is used to separate cell values, ; is used to separate cells and & is used to separate lines (used to separate level data from item data)
+
+function main()
+	subscribe(Event.MsgReceived)
+	subscribe(Event.Tick)
+	
+	items = {}
+	
+	transferFilePath = "serverTransferFile.txt"
+	bitfighterViewerUrl = "ENTER SERVER URL"
+	admins = {"Fordcars"}
+	newline = "&" -- To make sure it works everywhere
+	valueSeparator = "$";
+	cellSeparator = ";"
+	
+	firstTick = true
+	
+	gameInfo = bf:getGameInfo()
+	
+	sendFeedback = true -- Default value, can be toggled in game with !togglefeedback
+	sendChatMessages = true -- Default value
+	
+	if(arg[1]~=nil and arg[1]~="")then
+		sendChatMessages = toBoolean(arg[1])
+	end
+	
+	welcomeTextDelay = 1000
+	
+	levelData = ""
+	chatMessages = {} -- Reset when new messages are handled
+	maxChatMessages = 8 -- Maximum amount of chat messages that it can handle before clearing all messages
+	currentChatMessageId = 0
+	maxChatMessageId = 10000 -- Just to make sure it doesn't overflow or something
+	
+	createFile(transferFilePath)
+end
+
+function toBoolean(booleanValue)
+	if(booleanValue==true or booleanValue=="True" or booleanValue=="true" or booleanValue==1)then
+		return true
+	else
+		return false
+	end
+end
+
+function isAdmin(playerName)
+	for i,v in ipairs(admins) do
+		if(playerName==v) then
+			return true
+		end
+	end
+	
+	return false
+end
+
+function getChatMessageId()
+	if(currentChatMessageId<maxChatMessageId) then
+		currentChatMessageId = currentChatMessageId + 1
+	else
+		currentChatMessageId = 0
+	end
+	
+	return currentChatMessageId
+end
+
+function getLevelDataString(values, zones)
+	local outputString = ""
+	local currentZoneGeometry = nil
+	
+	for i,v in ipairs(values) do
+		outputString = outputString .. v .. cellSeparator
+	end
+	
+	for i,v in ipairs(zones) do
+		currentZoneGeometry = v:getGeom()
+		
+		outputString = outputString .. "{"
+		
+		for k,j in ipairs(currentZoneGeometry) do
+			outputString = outputString .. createStringPoint(j.x, j.y)
+		end
+		
+		outputString = outputString .. "}"
+	end
+	
+	return outputString .. cellSeparator .. newline
+end
+
+function createFile(path) -- Gets ran each time the script starts; makes sure the file exists.
+	writeToFile(path, levelData, false)
+end
+
+function onMsgReceived(message, sender, isGlobal)
+	local senderName = sender:getName()
+	local tempMessage = ""
+	
+	addChatMessage(senderName, message)
+	
+	if(message=="Hi" or message=="hi") then
+		local messageToSend = "Hi " .. senderName .. "!"
+		
+		addChatMessage("LevelController", messageToSend) -- Just for fun :)
+		globalMsg(messageToSend)
+	elseif(isAdmin(senderName)==true) then
+		if(message=="!togglefeedback") then
+			if(sendFeedback==true) then
+				sendFeedback = false
+				tempMessage = "Feedback off"
+			else
+				sendFeedback = true
+				tempMessage = "Feedback on"
+			end
+			
+			levelgen:privateMsg(tempMessage, senderName)
+		end
+	end
+end
+
+function addChatMessage(sender, message)
+	if(sendChatMessages==true) then
+		if(#chatMessages>=maxChatMessages) then
+			chatMessages = {}
+		end
+		
+		local chatMessageToAdd = {sender, message, getChatMessageId()}
+		table.insert(chatMessages, chatMessageToAdd)
+	end
+end
+
+function createDataLine()
+	local outputString = ""
+	local currentItemPos = nil
+	local currentItemType = nil
+	local currentItemName = ""
+	local currentItemData = {} -- Item pos is added automatically added
+	local currentItemDataString = ""
+	
+	local addItem = true
+	
+	local chatMessageName = "ChatMessage"
+	local currentChatMessageCellData = ""
+	
+	table.clear(items)
+	bf:findAllObjects(items, ObjType.Ship, ObjType.Robot, ObjType.Bullet, ObjType.Burst, ObjType.Mine, ObjType.Flag, ObjType.SoccerBallItem, ObjType.Seeker, ObjType.TestItem, ObjType.ResourceItem) -- Interestingly enough, this decides the rendering order for now
+	
+	for i,v in ipairs(items) do
+		currentItemPos = v:getPos()
+		currentItemType = v:getObjType();
+		currentItemName = ""
+		currentItemData = {}
+		currentItemDataString = ""
+		addItem = true
+		
+		if(currentItemType==ObjType.Ship or currentItemType==ObjType.Robot) then
+			if(v:isModActive(Module.Cloak)) then
+				addItem = false
+			else
+				currentItemName = "Ship"
+				currentItemData = {v:getPlayerInfo():getName(), v:getTeamIndex(), v:getAngle()}
+			end
+		elseif(currentItemType==ObjType.Bullet) then
+			currentItemName = "Bullet"
+		elseif(currentItemType==ObjType.Burst) then
+			currentItemName = "Burst"
+		elseif(currentItemType==ObjType.Mine) then
+			currentItemName = "Mine"
+		elseif(currentItemType==ObjType.Flag) then
+			currentItemName = "Flag"
+			currentItemData = {v:getTeamIndex()}
+		elseif(currentItemType==ObjType.SoccerBallItem) then
+			currentItemName = "SoccerBall"
+		elseif(currentItemType==ObjType.Seeker) then
+			currentItemName = "Seeker"
+		elseif(currentItemType==ObjType.TestItem) then
+			currentItemName = "TestItem"
+		elseif(currentItemType==ObjType.ResourceItem) then
+			currentItemName = "ResourceItem"
+		else
+			currentItemName = "Unknown"
+		end
+		
+		if(addItem==true) then
+			currentItemDataString = ""
+			
+			table.insert(currentItemData, createStringPoint(currentItemPos.x, currentItemPos.y))
+			
+			for j,k in ipairs(currentItemData) do
+				currentItemDataString = currentItemDataString .. k .. valueSeparator
+			end
+			
+			outputString = outputString .. createDataCell(currentItemName, currentItemDataString) .. cellSeparator
+		end
+	end
+	
+	if(sendChatMessages==true) then
+		for i,v in ipairs(chatMessages) do
+			currentChatMessageCellData = ""
+			
+			for j,k in ipairs(v) do
+				currentChatMessageCellData = currentChatMessageCellData .. k .. valueSeparator
+			end
+			
+			outputString = outputString .. createDataCell(chatMessageName, currentChatMessageCellData) .. cellSeparator
+		end
+	end
+	
+	return outputString .. newline
+end
+
+function createDataCell(cellName, cellValue)
+	local outputString = cellName .. valueSeparator .. cellValue
+	
+	return outputString
+end
+
+function createStringPoint(x, y) -- Returns a 2d point as a string
+	local outputString = "[" .. x .. "," .. y .. "]"
+	
+	return outputString
+end
+
+function updateTransferFile()
+	local outputString = levelData .. createDataLine()
+	
+	writeToFile(transferFilePath, outputString, false);
+end
+
+function sayWelcomeText()
+	local welcomeText = "Note: This server has a live feed at " .. bitfighterViewerUrl
+	globalMsg(welcomeText)
+end
+
+function onTick()
+	if(firstTick==true) then -- Makes sure the game is really running now
+		firstTick = false
+		
+		table.clear(items)
+		bf:findAllObjects(items, ObjType.Barrier)
+ 		
+		levelData = getLevelDataString({gameInfo:getLevelName(), gameInfo:getGameTypeName()}, items)
+		
+		Timer:scheduleOnce(sayWelcomeText, welcomeTextDelay)
+		
+		-- Timer:scheduleRepeating(updateTransferFile, updateTransferFileDelay)
+	end
+	
+	if(sendFeedback==true) then
+		updateTransferFile()
+	end
+end

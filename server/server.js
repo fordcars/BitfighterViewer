@@ -24,7 +24,7 @@ var numberOfConnectedClients = 0;
 var levelData = {};
 var c = {}; // Constants
 
-c.transferFilePath = "C:/Users/Carl/AppData/Roaming/Bitfighter/screenshots/serverTransferFile.txt";
+c.transferFilePath = "C:/Users/Fordcars/AppData/Roaming/Bitfighter/screenshots/serverTransferFile.txt";
 c.clientFileName = "client/client.html";
 c.serverPort = 3000;
 c.newline = "&";

@@ -16,6 +16,8 @@
 
 -- $ is used to separate cell values, ; is used to separate cells and & is used to separate lines (used to separate level data from item data)
 
+-- TODO: Add more nil checks, certainly in createDataLine()
+
 function main()
 	subscribe(Event.MsgReceived)
 	subscribe(Event.Tick)

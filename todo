@@ -1,0 +1,14 @@
+In order of priority per section
+
+Levelgen:
+-Add more nil checks, certainly in createDataLine()
+
+Server:
+
+Client:
+-OPTIMIZE: only update when receiving item data
+-Write a universal string parser
+-Figure out some way to make chat work when restarting the levelgen
+-Item render order!
+-Pre-render items?
+-Hide flag in cloaked nexus players (add data value to flag)

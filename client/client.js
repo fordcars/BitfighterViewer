@@ -1,5 +1,5 @@
 // BitfighterViewer
-// Copyright © 2014 Carl Hewett
+// Copyright Â© 2014 Carl Hewett
 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -15,13 +15,6 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 //////////////////////////////////////////////////////////////////////////
-//
-// TODO: Write a universal string parser -Low
-// TODO: Figure out some way to make chat work when restarting the levelgen
-// TODO: Hide flag in cloaked nexus players (add data value to flag) -Low
-// TODO: Item render order! -Low
-// TODO: Pre-render items? -Low
-// TODO: Release GPL? -Low
 //
 // $ is used to separate cell values, ; is used to separate cells and & is used to separate lines (used to separate level data from item data)
 
@@ -110,7 +103,7 @@ function main()
 	
 	definitions();
 	
-	(function() // requestAnimationFrame polyfill by Erik Möller. Fixed by Paul Irish and Tino Zijdel, https://gist.github.com/paulirish/1579671, MIT license
+	(function() // requestAnimationFrame polyfill by Erik MÃ¶ller. Fixed by Paul Irish and Tino Zijdel, https://gist.github.com/paulirish/1579671, MIT license
 	{
 		var lastTime = 0;
 		var vendors = ['ms', 'moz', 'webkit', 'o'];

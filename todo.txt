@@ -12,3 +12,4 @@ Client:
 -Item render order!
 -Pre-render items?
 -Hide flag in cloaked nexus players (add data value to flag)
+-Parse data on sever, and send objects, instead of strings, to clients

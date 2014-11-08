@@ -4,6 +4,7 @@ Levelgen:
 -Add more nil checks, certainly in createDataLine()
 
 Server:
+-Parse data on sever, and send objects, instead of strings, to clients
 
 Client:
 -OPTIMIZE: only update when receiving item data
@@ -12,4 +13,3 @@ Client:
 -Item render order!
 -Pre-render items?
 -Hide flag in cloaked nexus players (add data value to flag)
--Parse data on sever, and send objects, instead of strings, to clients

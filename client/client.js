@@ -148,9 +148,6 @@ function main()
 
 function setupElements(parent)
 {
-	var currentCanvas;
-	var currentCanvasContext;
-	
 	canvasContainer = document.createElement("div");
 	canvasContainer.style.width = (c.defaultCanvasWidth) + "px";
 	canvasContainer.style.height = (c.defaultCanvasHeight) + "px";

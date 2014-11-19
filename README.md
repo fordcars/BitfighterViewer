@@ -9,9 +9,9 @@ Note: You need Bitfighter and node.js to use this. You also need to download the
 
 - To use, simply drop bitfighterViewer.levelgen (levelgen/bitfighterViewer.levelgen) in the scrips or levels directory of Bitfighter (in Application Support on Mac, AppData on Windows, .bitfighter in Linux). You can change the bitfighterViewerUrl variable in the levelgen to the Ip or Url of the http server you'll be running if you want it to be displayed in the begginning of the level.
 
-- Then, add the levelgen in a Bitfighter level, by opening the level in the editor, and typing "bitfighterViewer" in the script section). You can also add the script in the bitfighter.ini to have it run in all the levels.
+- Then, add the levelgen in a Bitfighter level, by opening the level in the editor, and typing "bitfighterViewer" in the script section. You can also add the script in the bitfighter.ini to have it run in all the levels.
 
-- Then, change the c.transferFilePath in server.js to the path of the txt file that will be created once you run the level. This should be something like "C:/Users/Fordcars/AppData/Roaming/Bitfighter/screenshots/serverTransferFile.txt" (on Windows, but Mac and Linux should be similar).
+- Then, change the c.transferFilePath in server.js to the path of the txt file that will be created once you run the level (this will be in the screenshots directory of bitfighter). This should be something like "C:/Users/Fordcars/AppData/Roaming/Bitfighter/screenshots/serverTransferFile.txt" (on Windows, but Mac and Linux should be similar).
 
 - I would recommend you run the level with the levegen to make sure the .txt is created.
 

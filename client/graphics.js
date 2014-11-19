@@ -32,12 +32,12 @@ function addGraphicMembers(layer)
 		{
 			this.clearRect(c.canCornerXATAS, c.canCornerYATAS, c.canWidthAS, c.canHeightAS);
 		}
-	};
+	}
 	
 	layer.fillLayer = function()
 	{
 		this.fillRect(c.canCornerXATAS, c.canCornerYATAS, c.canWidthAS, c.canHeightAS);
-	};
+	}
 	
 	layer.drawCircle = function(x, y, radius, filled)
 	{
@@ -51,7 +51,7 @@ function addGraphicMembers(layer)
 		{
 			this.stroke();
 		}
-	};
+	}
 	
 	layer.drawCircleWithOutline = function(x, y, radius)
 	{
@@ -60,14 +60,14 @@ function addGraphicMembers(layer)
 		
 		this.fill();
 		this.stroke();
-	};
+	}
 	
 	layer.drawCenteredString = function(string, x, y)
 	{
 		var halfStringLength = this.measureText(string).width / 2;
 		
 		this.fillText(string, x - halfStringLength, y);
-	};
+	}
 	
 	layer.drawAngleLine = function(x1, y1, angle, length) // http://stackoverflow.com/questions/22977372/js-canvas-draw-line-at-a-specified-angle
 	{
@@ -75,23 +75,23 @@ function addGraphicMembers(layer)
 		this.moveTo(x1, y1);
 		this.lineTo(x1 + length * Math.cos(angle), y1 + length * Math.sin(angle));
 		this.stroke();
-	};
+	}
 	
 	layer.changeTranslation = function(x, y)
 	{
 		this.translate(x, y);
-	};
+	}
 	
 	layer.changeScaling = function(x, y)
 	{
 		this.scale(x, y);
-	};
+	}
 	
 	layer.resetLayer = function(x, y)
 	{
 		this.restore();
 		this.save();
-	};
+	}
 }
 
 function translateLayersToCenter(layers)

@@ -21,7 +21,6 @@
 // TODO: Hide flag in cloaked nexus players (add data value to flag) -Low
 // TODO: Item render order! -Low
 // TODO: Pre-render items? -Low
-// TODO: Release GPL? -Low
 //
 // $ is used to separate cell values, ; is used to separate cells and & is used to separate lines (used to separate level data from item data)
 
@@ -149,6 +148,9 @@ function main()
 
 function setupElements(parent)
 {
+	var currentCanvas;
+	var currentCanvasContext;
+	
 	canvasContainer = document.createElement("div");
 	canvasContainer.style.width = (c.defaultCanvasWidth) + "px";
 	canvasContainer.style.height = (c.defaultCanvasHeight) + "px";
